@@ -1023,8 +1023,8 @@ const products = [
     id: 1, 
     name: 'VELARIS OFFICIAL MONOGRAM T-SHIRT', 
     cat: 'T-Shirt Base',
-    minPrice: 25.00, 
-    maxPrice: 27.60, 
+    minPrice: 20.00, 
+    maxPrice: 22.60, 
     sizes: ['S','M','L','XL','2XL','3XL'], 
     colors: [
       { name: 'NERO', file: 'Velaris/tshirt-black.png' },
@@ -1047,8 +1047,8 @@ const products = [
     id: 5, 
     name: 'VELARIS "NIGHT SKY" T-SHIRT', 
     cat: 'T-Shirt Base',
-    minPrice: 35.00, 
-    maxPrice: 38.00, 
+    minPrice: 30.00, 
+    maxPrice: 33.00, 
     sizes: ['S','M','L','XL','2XL','3XL'], 
     colors: [
       { name: 'NERO', file: 'Velaris/Nightsky-black.png' },
@@ -1070,8 +1070,8 @@ const products = [
     id: 6,
     name: 'VELARIS "SERENDIPITY" T-SHIRT',
     cat: 'T-Shirt Base',
-    minPrice: 35.00,
-    maxPrice: 38.00,
+    minPrice: 30.00,
+    maxPrice: 33.00,
     sizes: ['S','M','L','XL','2XL','3XL'],
     colors: [
       { name: 'BLACK',   file: 'Velaris/Serendipity-Black.png' },
@@ -1546,15 +1546,14 @@ function filterProducts(){ renderGrid(); }
 
 function getCustomPrice(productId, size) {
   if (productId === 1) {
-    if (size === '2XL') return 26.30;
-    if (size === '3XL') return 27.60;
-    return 25.00;
+    if (size === '2XL') return 21.30;
+    if (size === '3XL') return 22.60;
+    return 20.00;
   }
-  // Night Sky e Serendipity: stesso schema prezzi
   if (productId === 5 || productId === 6) {
-    if (size === '2XL') return 36.50;
-    if (size === '3XL') return 38.00;
-    return 35.00;
+    if (size === '2XL') return 31.50;
+    if (size === '3XL') return 33.00;
+    return 30.00;
   }
   return null;
 }
