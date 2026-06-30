@@ -264,6 +264,16 @@
       border-color: var(--color-text-primary);
     }
 
+    /* CARD MATERIAL INFO */
+    .card-material-info {
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      color: #ff3333;
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
     /* STAMP BADGE */
     .card-stamp-badge {
       display: inline-flex;
@@ -1087,6 +1097,33 @@ const products = [
       { icon: '📐', text: 'Regular fit' },
       { icon: '🔵', text: 'Struttura tubolare' }
     ]
+  },
+  {
+    id: 7,
+    name: 'VELARIS "STILL BLOOMING" T-SHIRT',
+    cat: 'T-Shirt Base',
+    minPrice: 25.00,
+    maxPrice: 28.00,
+    sizes: ['S','M','L','XL','2XL','3XL'],
+    colors: [
+      { name: 'BLACK',            file: 'Velaris/Still_blooming-Black.png',            material: '100% cotone ring-spun' },
+      { name: 'NAVY',             file: 'Velaris/Still_blooming-Navy.png',             material: '100% cotone ring-spun' },
+      { name: 'DARK HEATHER',     file: 'Velaris/Still_blooming-dark_heather.png',     material: '65% poliestere, 35% cotone' },
+      { name: 'HEATHER NAVY',     file: 'Velaris/Still_blooming-Navy_heather.png',     material: '65% poliestere, 35% cotone' },
+      { name: 'GRAPHITE HEATHER', file: 'Velaris/Still_blooming-graphite_heather.png', material: '65% poliestere, 35% cotone' },
+      { name: 'MILITARY GREEN',   file: 'Velaris/Still_blooming-Military_green.png',   material: '100% cotone ring-spun' },
+      { name: 'WHITE',            file: 'Velaris/Still_blooming-white.png',            material: '100% cotone ring-spun' }
+    ],
+    stamp: 'Stampa DTflex',
+    status: 'Drop 01',
+    available: true,
+    descSpecs: [
+      { icon: '🧵', text: 'Tinta unita: 100% cotone ring-spun' },
+      { icon: '🌑', text: 'Dark/Graphite/Navy Heather: 65% poliestere, 35% cotone' },
+      { icon: '⚖️', text: 'Grammatura: 153 g/m² (4,5 oz/yd²)' },
+      { icon: '📐', text: 'Regular fit' },
+      { icon: '🔵', text: 'Struttura tubolare' }
+    ]
   }
 ];
 
@@ -1555,6 +1592,11 @@ function getCustomPrice(productId, size) {
     if (size === '3XL') return 33.00;
     return 30.00;
   }
+  if (productId === 7) {
+    if (size === '2XL') return 26.50;
+    if (size === '3XL') return 28.00;
+    return 25.00;
+  }
   return null;
 }
 
@@ -1565,6 +1607,14 @@ function changeColorImage(productId, selectElement) {
     const colorObj = product.colors.find(c => c.name === selectedColorName);
     if (colorObj) {
       document.getElementById(`product-img-${productId}`).src = colorObj.file;
+      // Mostra info materiale se disponibile per questo colore
+      const matEl = document.getElementById(`material-info-${productId}`);
+      if (matEl && colorObj.material) {
+        matEl.textContent = `// TESSUTO: ${colorObj.material}`;
+        matEl.style.display = 'block';
+      } else if (matEl) {
+        matEl.style.display = 'none';
+      }
     }
   }
 }
@@ -1593,6 +1643,13 @@ function renderGrid(){
       initialImg = p.colors[0].file;
       const colorOptions = p.colors.map(c => `<option value="${c.name}">COLOR: ${c.name}</option>`).join('');
       colorSelectHtml = `<select class="card-size-select" id="color-select-${p.id}" onchange="changeColorImage(${p.id}, this)">${colorOptions}</select>`;
+      // Mostra materiale del primo colore se disponibile
+      const firstColor = p.colors[0];
+      if (firstColor && firstColor.material) {
+        colorSelectHtml += `<div id="material-info-${p.id}" class="card-material-info">// TESSUTO: ${firstColor.material}</div>`;
+      } else {
+        colorSelectHtml += `<div id="material-info-${p.id}" class="card-material-info" style="display:none;"></div>`;
+      }
     }
 
     const specsHtml = p.descSpecs ? `
