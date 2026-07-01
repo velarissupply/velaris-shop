@@ -264,6 +264,33 @@
       border-color: var(--color-text-primary);
     }
 
+    /* CARD SIZE GUIDE */
+    .card-size-guide-wrapper {
+      margin: 8px 0;
+    }
+
+    .card-size-guide-toggle {
+      background: none;
+      border: 1px solid #222;
+      color: #555;
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 1px;
+      transition: border-color 0.2s, color 0.2s;
+      width: 100%;
+    }
+
+    .card-size-guide-toggle:hover {
+      border-color: #555;
+      color: #999;
+    }
+
     /* CARD MATERIAL INFO */
     .card-material-info {
       font-family: 'Courier New', monospace;
@@ -1412,6 +1439,14 @@ function setStepActive(stepId, active) {
   el.style.pointerEvents = active ? 'auto' : 'none';
 }
 
+function toggleCardSizeGuide(productId) {
+  const panel = document.getElementById(`card-sg-panel-${productId}`);
+  const chevron = document.getElementById(`card-sg-chevron-${productId}`);
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  chevron.className = isOpen ? 'ti ti-chevron-down' : 'ti ti-chevron-up';
+}
+
 function toggleSizeGuide() {
   const panel = document.getElementById('size-guide-panel');
   const chevron = document.getElementById('size-guide-chevron');
@@ -1653,6 +1688,28 @@ function renderGrid(){
       </div>
     ` : '';
 
+    const sizeGuideHtml = `
+      <div class="card-size-guide-wrapper">
+        <button class="card-size-guide-toggle" onclick="toggleCardSizeGuide(${p.id})">
+          <i class="ti ti-ruler"></i> GUIDA ALLE TAGLIE <i class="ti ti-chevron-down" id="card-sg-chevron-${p.id}"></i>
+        </button>
+        <div id="card-sg-panel-${p.id}" style="display:none;">
+          <table class="size-guide-table" style="margin-top:8px;">
+            <thead><tr><th>Taglia</th><th>Lunghezza</th><th>Larghezza</th><th>Manica</th></tr></thead>
+            <tbody>
+              <tr><td>S</td><td>71 cm</td><td>45.7 cm</td><td>42.6 cm</td></tr>
+              <tr><td>M</td><td>73.7 cm</td><td>50.8 cm</td><td>45.4 cm</td></tr>
+              <tr><td>L</td><td>76.2 cm</td><td>56 cm</td><td>48.6 cm</td></tr>
+              <tr><td>XL</td><td>78.7 cm</td><td>61 cm</td><td>51.8 cm</td></tr>
+              <tr><td>2XL</td><td>81.3 cm</td><td>66 cm</td><td>55 cm</td></tr>
+              <tr><td>3XL</td><td>83.8 cm</td><td>71 cm</td><td>57.8 cm</td></tr>
+            </tbody>
+          </table>
+          <div style="font-size:9px; color:#555; font-family:'Courier New',monospace; margin-top:6px;">* Variazione fino a 5 cm</div>
+        </div>
+      </div>
+    `;
+
     const stampHtml = p.stamp ? `<div class="card-stamp-badge"><i class="ti ti-needle-thread"></i> ${p.stamp}</div>` : '';
 
     return `
@@ -1666,6 +1723,7 @@ function renderGrid(){
           <div class="card-name">${p.name}</div>
           ${stampHtml}
           ${specsHtml}
+          ${sizeGuideHtml}
           <div class="card-selects">
             ${colorSelectHtml}
             <select class="card-size-select" id="size-select-${p.id}">
